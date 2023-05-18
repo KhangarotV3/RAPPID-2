@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo App</title>
+    <style>
+        
+        .task {
+            margin-bottom: 10px;
+        }
+        .arrows {
+            display: inline-block;
+            width: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        
+        var tasks = [
+            { id: 1, name: 'Task 1' },
+            { id: 2, name: 'Task 2' },
+            { id: 3, name: 'Task 3' },
+            { id: 4, name: 'Task 4' },
+            { id: 5, name: 'Task 5' }
+        ];
+
+        function renderTasks() {
+            var taskList = document.getElementById('task-list');
+            taskList.innerHTML = '';
+
+            tasks.forEach(function(task, index) {
+                var taskElement = document.createElement('div');
+                taskElement.className = 'task';
+                taskElement.innerHTML = `
+                    <span class="arrows">${index > 0 ? '&#8593;' : ''}</span>
+                    <span>${task.name}</span>
+                    <span class="arrows">${index < tasks.length - 1 ? '&#8595;' : ''}</span>
+                `;
+
+                // Event listener for up arrow
+                taskElement.querySelector('.arrows:first-child').addEventListener('click', function() {
+                    if (index > 0) {
+                        swapTasks(index, index - 1);
+                        renderTasks();
+                    }
+                });
+
+                
+                taskElement.querySelector('.arrows:last-child').addEventListener('click', function() {
+                    if (index < tasks.length - 1) {
+                        swapTasks(index, index + 1);
+                        renderTasks();
+                    }
+                });
+
+                taskList.appendChild(taskElement);
+            });
+        }
+
+        function swapTasks(indexA, indexB) {
+            var temp = tasks[indexA];
+            tasks[indexA] = tasks[indexB];
+            tasks[indexB] = temp;
+        }
+
+       
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTasks();
+        });
+    </script>
+</head>
+<body>
+    <h1>Todo App</h1>
+    <div id="task-list"></div>
+</body>
+</html>
